@@ -21,8 +21,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Card(
+    return Card(
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: Column(
@@ -109,6 +108,6 @@ class _UserProfileState extends State<UserProfile> {
           ],
         ),
       ),
-    ));
+    );
   }
 }
