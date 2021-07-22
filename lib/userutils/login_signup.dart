@@ -144,7 +144,7 @@ class _SignupState extends State<Signup> {
                           if (value != null) {
                             _password = hashVal(value);
                           } else {
-                            _userId = "";
+                            _password = "";
                           }
                         },
                         decoration: InputDecoration(
