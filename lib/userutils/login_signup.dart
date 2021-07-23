@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
@@ -9,11 +11,65 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool _obscurePassword = true;
-  String _userId = "";
-  String _password = "";
+  final userController = TextEditingController();
+  final passwordController = TextEditingController();
+  final showToast = false;
 
   String hashVal(String toHash) {
     return sha256.convert(utf8.encode(toHash)).toString();
+  }
+
+  Future<String> _postLogin() async {
+    http.Response returned = await http.post(
+        Uri.parse("http://127.0.0.1:5000/login"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "user_id": userController.text,
+          "user_pass": passwordController.text
+        }));
+    print(jsonDecode(returned.body)["login_attempt"]);
+    if (jsonDecode(returned.body)["login_attempt"] == 1) {
+      return "Login Successful!";
+    } else {
+      return "Invalid Login. Please try again!";
+    }
+  }
+
+  FToast? fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast?.init(context);
+  }
+
+  _showToast(String toastMessage) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.greenAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text(toastMessage),
+        ],
+      ),
+    );
+
+    fToast?.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: Duration(seconds: 3),
+    );
   }
 
   @override
@@ -26,38 +82,16 @@ class _LoginState extends State<Login> {
         SizedBox(height: 50),
         RichText(text: TextSpan(text: 'Login', style: TextStyle(fontSize: 50))),
         SizedBox(height: 50),
-        TextFormField(
+        TextField(
           obscureText: false,
           decoration: InputDecoration(
               border: OutlineInputBorder(), labelText: 'Email ID'),
-          onSaved: (String? value) {
-            if (value != null) {
-              _userId = value;
-            } else {
-              _userId = "";
-            }
-          },
-          validator: (String? value) {
-            RegExp emailExp =
-                RegExp(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
-            if (value != null &&
-                (!emailExp.hasMatch(value) || value.length == 0)) {
-              return ("Enter a valid email address!");
-            } else {
-              return null;
-            }
-          },
+          controller: userController,
         ),
         SizedBox(height: 20),
-        TextFormField(
+        TextField(
             obscureText: _obscurePassword,
-            onSaved: (String? value) {
-              if (value != null) {
-                _password = hashVal(value);
-              } else {
-                _userId = "";
-              }
-            },
+            controller: passwordController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Password',
@@ -77,9 +111,14 @@ class _LoginState extends State<Login> {
             )),
         SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            String toastString = await _postLogin();
+            setState(() {
+              _showToast(toastString);
+            });
+          },
           child: Text("Log In"),
-        )
+        ),
       ]),
     )));
   }
@@ -90,11 +129,71 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  String _userId = "", _firstName = "", _lastName = "", _password = "";
+  final fnameController = TextEditingController();
+  final lnameController = TextEditingController();
+  final emailIDController = TextEditingController();
+  final passwordController = TextEditingController();
+
   bool _obscurePassword = true;
+
+  FToast? fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast?.init(context);
+  }
 
   String hashVal(String toHash) {
     return sha256.convert(utf8.encode(toHash)).toString();
+  }
+
+  _showToast(String toastMessage) {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.greenAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text(toastMessage),
+        ],
+      ),
+    );
+
+    fToast?.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: Duration(seconds: 3),
+    );
+  }
+
+  Future<String> _postSignIn() async {
+    http.Response returned =
+        await http.post(Uri.parse("http://127.0.0.1:5000/signup"),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, String>{
+              "user_id": emailIDController.text,
+              "user_pass": passwordController.text,
+              "user_fname": fnameController.text,
+              "user_lname": lnameController.text
+            }));
+    if (jsonDecode(returned.body)["signup_attempt"] == 1) {
+      return "Signup Successful!";
+    } else if (jsonDecode(returned.body)["error"] != null) {
+      return "error: ${jsonDecode(returned.body)["error"]}";
+    } else {
+      return "User ID already exists!";
+    }
   }
 
   @override
@@ -113,38 +212,16 @@ class _SignupState extends State<Signup> {
                         text: "Create account for GradeSeeker",
                         style: TextStyle(fontSize: 50))),
                 SizedBox(height: 50),
-                TextFormField(
+                TextField(
                   obscureText: false,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Email ID'),
-                  onSaved: (String? value) {
-                    if (value != null) {
-                      _userId = value;
-                    } else {
-                      _userId = "";
-                    }
-                  },
-                  validator: (String? value) {
-                    RegExp emailExp = RegExp(
-                        r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)");
-                    if (value != null &&
-                        (!emailExp.hasMatch(value) || value.length == 0)) {
-                      return ("Enter a valid email address!");
-                    } else {
-                      return null;
-                    }
-                  },
+                  controller: emailIDController,
                 ),
                 SizedBox(height: 20),
-                TextFormField(
+                TextField(
                     obscureText: _obscurePassword,
-                    onSaved: (String? value) {
-                      if (value != null) {
-                        _password = hashVal(value);
-                      } else {
-                        _password = "";
-                      }
-                    },
+                    controller: passwordController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Password',
@@ -165,51 +242,28 @@ class _SignupState extends State<Signup> {
                       ),
                     )),
                 SizedBox(height: 20),
-                TextFormField(
+                TextField(
                   obscureText: false,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'First Name'),
-                  onSaved: (String? value) {
-                    if (value != null) {
-                      _firstName = value;
-                    } else {
-                      _firstName = "";
-                    }
-                  },
-                  validator: (String? value) {
-                    RegExp nameExp = RegExp(r"(^[a-zA-Z])");
-                    if (value != null &&
-                        (!nameExp.hasMatch(value) || value.length == 0)) {
-                      return ("Invalid characters found in name. ");
-                    } else {
-                      return null;
-                    }
-                  },
+                  controller: fnameController,
                 ),
                 SizedBox(height: 20),
-                TextFormField(
+                TextField(
                   obscureText: false,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Last Name'),
-                  onSaved: (String? value) {
-                    if (value != null) {
-                      _lastName = value;
-                    } else {
-                      _lastName = "";
-                    }
-                  },
-                  validator: (String? value) {
-                    RegExp nameExp = RegExp(r"(^[a-zA-Z])");
-                    if (value != null &&
-                        (!nameExp.hasMatch(value) || value.length == 0)) {
-                      return ("Invalid characters found in name. ");
-                    } else {
-                      return null;
-                    }
-                  },
+                  controller: lnameController,
                 ),
                 SizedBox(height: 50),
-                ElevatedButton(onPressed: () {}, child: Text("Sign Up"))
+                ElevatedButton(
+                    onPressed: () async {
+                      String signupString = await _postSignIn();
+                      setState(() {
+                        _showToast(signupString);
+                      });
+                    },
+                    child: Text("Sign Up"))
               ],
             )));
   }
