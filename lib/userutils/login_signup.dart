@@ -27,7 +27,7 @@ class _LoginState extends State<Login> {
         },
         body: jsonEncode(<String, String>{
           "user_id": userController.text,
-          "user_pass": passwordController.text
+          "user_pass": hashVal(passwordController.text)
         }));
     print(jsonDecode(returned.body)["login_attempt"]);
     if (jsonDecode(returned.body)["login_attempt"] == 1) {
@@ -183,7 +183,7 @@ class _SignupState extends State<Signup> {
             },
             body: jsonEncode(<String, String>{
               "user_id": emailIDController.text,
-              "user_pass": passwordController.text,
+              "user_pass": hashVal(passwordController.text),
               "user_fname": fnameController.text,
               "user_lname": lnameController.text
             }));
