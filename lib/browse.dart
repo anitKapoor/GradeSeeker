@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'profs.dart';
+import 'classes.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -39,6 +40,7 @@ class _SelectionRow extends State<CategoryChoice> {
     setState(() {
       var datafromJSON = json.decode(response.body) as List<dynamic>;
       results = datafromJSON;
+      // print(results);
     });
     // print('${results.length}');
     return "successful";
@@ -73,13 +75,15 @@ class _SelectionRow extends State<CategoryChoice> {
                   icon: const Icon(Icons.arrow_right),
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProfsPage(
-                                  id: data['id'],
-                                  name: data["firstName"] + " " + data["lastName"],
-                                  rating: rat,
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfsPage(
+                          id: data['id'],
+                          name: data["firstName"] + " " + data["lastName"],
+                          rating: rat,
+                        ),
+                      ),
+                    );
                   },
                 )),
               ],
@@ -89,6 +93,17 @@ class _SelectionRow extends State<CategoryChoice> {
                 DataCell(Text(data["courseCode"])),
                 DataCell(Text(data["courseTitle"])),
                 DataCell(Text(data["crn"].toString())),
+                DataCell(Text(data["av"].toStringAsFixed(2))),
+                DataCell(
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_right,
+                    ),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassesPage()));
+                    },
+                  ),
+                ),
               ],
             );
     }
@@ -221,6 +236,16 @@ class _SelectionRow extends State<CategoryChoice> {
                         DataColumn(
                             label: Text(
                           "CRN",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                        DataColumn(
+                            label: Text(
+                          "Average Grade",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                        DataColumn(
+                            label: Text(
+                          "More Information",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         )),
                       ],

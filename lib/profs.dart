@@ -7,36 +7,59 @@ class ProfsPage extends StatefulWidget {
   final String name;
   final String rating;
   const ProfsPage({Key? key, required this.id, required this.name, required this.rating}) : super(key: key);
+
   @override
   _ProfsPageState createState() => _ProfsPageState();
 }
 
 class _ProfsPageState extends State<ProfsPage> {
   List courses = [];
+  bool render_courses = false;
+  double averageGpa = 0;
+  bool render_average = false;
 
-  Future<String> getData(String category) async {
+  @override
+  void initState() {
+    super.initState();
+    pop();
+  }
+
+  void pop() async {
+    await newGetData("classes");
+    await newGetData("average");
+  }
+
+  Future newGetData(String category) async {
     var response =
         await http.post(Uri.parse("http://127.0.0.1:5000/prof"), headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"}, body: {"Category": category, "ID": widget.id.toString()});
-    var datafromJSON = json.decode(response.body) as List<dynamic>;
-    // print(datafromJSON[0]);
     if (category == "classes") {
+      var datafromJSON = json.decode(response.body) as List<dynamic>;
       courses = datafromJSON;
+      setState(() {
+        render_courses = true;
+      });
+    }
+    if (category == "average") {
+      var datafromJSON = json.decode(response.body) as Map<String, dynamic>;
+      averageGpa = datafromJSON["av"];
+      setState(() {
+        render_average = true;
+      });
     }
     return "successful";
   }
 
-  String classes_data() {
-    return courses.length != 0 ? courses[0]["semester"] : "";
-  }
-
-  @override
-  void initState() {
-    getData("classes").then((classes) {});
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    DataRow _getDataRow(data) {
+      return DataRow(
+        cells: <DataCell>[
+          DataCell(Text(data["crn"].toString())),
+          DataCell(Text(data["semester"])),
+        ],
+      );
+    }
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -50,17 +73,44 @@ class _ProfsPageState extends State<ProfsPage> {
             children: <Widget>[
               Align(
                 child: Container(
-                  child: Text(widget.name),
+                  child: Text("Professor's name : " + widget.name),
                 ),
               ),
               Align(
                 child: Container(
-                  child: Text(widget.rating),
+                  child: Text("Rating : " + widget.rating),
                 ),
               ),
               Align(
                 child: Container(
-                  child: Text(classes_data()),
+                  child: render_courses
+                      ? SingleChildScrollView(
+                          child: DataTable(
+                            columns: [
+                              DataColumn(
+                                  label: Container(
+                                child: Text(
+                                  "CRN",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )),
+                              DataColumn(
+                                  label: Container(
+                                child: Text(
+                                  "Semester",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )),
+                            ],
+                            rows: List.generate(courses.length, (index) => (_getDataRow(courses[index]))),
+                          ),
+                        )
+                      : Container(),
+                ),
+              ),
+              Align(
+                child: Container(
+                  child: render_average ? Text("Average GPA in courses taught : " + averageGpa.toString()) : Container(),
                 ),
               ),
             ],
