@@ -20,6 +20,8 @@ class _LoginState extends State<Login> {
   }
 
   Future<String> _postLogin() async {
+    print(hashVal(passwordController.text));
+
     http.Response returned = await http.post(
         Uri.parse("http://127.0.0.1:5000/login"),
         headers: <String, String>{
