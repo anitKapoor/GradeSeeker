@@ -67,6 +67,10 @@ class _ProfsPageState extends State<ProfsPage> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+         title: const Text('Professors'),
+         backgroundColor: Colors.yellow,
+        ),
       body: Stack(
         children: <Widget>[
           IconButton(
@@ -74,12 +78,13 @@ class _ProfsPageState extends State<ProfsPage> {
               Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_left),
+            color: Colors.black,
           ),
           Column(
             children: <Widget>[
               Align(
                 child: Container(
-                  child: Text("Professor's name : " + widget.name),
+                  child: Text("Name : " + widget.name),
                 ),
               ),
               Align(
@@ -116,7 +121,7 @@ class _ProfsPageState extends State<ProfsPage> {
               ),
               Align(
                 child: Container(
-                  child: render_average ? Text("Average GPA in courses taught : " + averageGpa.toString()) : Container(),
+                  child: render_average ? Text("Average GPA in Courses: " + averageGpa.toString()) : Container(),
                 ),
               ),
             ],
