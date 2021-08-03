@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradeseeker/homepage.dart';
-import 'package:gradeseeker/userutils/search.dart';
+import 'package:gradeseeker/datautils/search.dart';
 import 'package:gradeseeker/userutils/userprofile.dart';
 import 'package:http/http.dart' as http;
 
