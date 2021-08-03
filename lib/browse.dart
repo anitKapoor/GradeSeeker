@@ -1,16 +1,11 @@
 import 'dart:js';
 
 import 'package:flutter/material.dart';
+import 'package:gradeseeker/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'profs.dart';
 import 'classes.dart';
-
-void main() {
-  runApp(MaterialApp(
-    home: BrowsePage(),
-  ));
-}
 
 final key = new GlobalKey<_SelectionRow>();
 
@@ -35,8 +30,14 @@ class _SelectionRow extends State<CategoryChoice> {
 
   Future<String> getData() async {
     String table = _profButton ? "professors" : "courses";
-    var response = await http
-        .post(Uri.parse("http://127.0.0.1:5000/browse"), headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"}, body: {"Category": table, "Offset": _offset.toString()});
+    var response = await http.post(
+      Uri.parse("http://127.0.0.1:5000/browse"),
+      headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+      body: {
+        "Category": table,
+        "Offset": _offset.toString(),
+      },
+    );
     setState(() {
       var datafromJSON = json.decode(response.body) as List<dynamic>;
       results = datafromJSON;
@@ -100,7 +101,15 @@ class _SelectionRow extends State<CategoryChoice> {
                       Icons.arrow_right,
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ClassesPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ClassesPage(
+                                    code: data["courseCode"],
+                                    title: data["courseTitle"],
+                                    crn: data["crn"],
+                                    av: data["av"],
+                                  )));
                     },
                   ),
                 ),
@@ -110,6 +119,7 @@ class _SelectionRow extends State<CategoryChoice> {
 
     return Stack(
       children: <Widget>[
+        // hamburger(context),
         Align(
           child: Container(
             child: TextButton(
@@ -344,4 +354,15 @@ class _SelectionRow extends State<CategoryChoice> {
       ],
     );
   }
+}
+
+Widget hamburger(BuildContext context) {
+  return Drawer(
+    child: Column(
+      children: <Widget>[
+        Text("data"),
+        Text("data1"),
+      ],
+    ),
+  );
 }

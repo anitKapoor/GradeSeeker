@@ -30,8 +30,14 @@ class _ProfsPageState extends State<ProfsPage> {
   }
 
   Future newGetData(String category) async {
-    var response =
-        await http.post(Uri.parse("http://127.0.0.1:5000/prof"), headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"}, body: {"Category": category, "ID": widget.id.toString()});
+    var response = await http.post(
+      Uri.parse("http://127.0.0.1:5000/prof"),
+      headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+      body: {
+        "Category": category,
+        "ID": widget.id.toString(),
+      },
+    );
     if (category == "classes") {
       var datafromJSON = json.decode(response.body) as List<dynamic>;
       courses = datafromJSON;
