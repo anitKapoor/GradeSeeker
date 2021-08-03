@@ -21,6 +21,7 @@ void main() {
 
 class HomePage extends StatefulWidget {
   @override
+  static const String route = '/';
   _HomePageState createState() => _HomePageState();
 }
 
