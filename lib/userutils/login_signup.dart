@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
-  static const String route = '/login';
   _LoginState createState() => _LoginState();
 }
 
