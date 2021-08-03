@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:gradeseeker/arguments.dart';
 
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
@@ -6,20 +7,28 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
+  static const String route = '/login';
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
+  FToast? fToast;
   bool _obscurePassword = true;
   final userController = TextEditingController();
   final passwordController = TextEditingController();
   final showToast = false;
 
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast().init(context);
+  }
+
   String hashVal(String toHash) {
     return sha256.convert(utf8.encode(toHash)).toString();
   }
 
-  Future<String> _postLogin() async {
+  Future<int> _postLogin() async {
     print(hashVal(passwordController.text));
 
     http.Response returned = await http.post(
@@ -31,21 +40,12 @@ class _LoginState extends State<Login> {
           "user_id": userController.text,
           "user_pass": hashVal(passwordController.text)
         }));
-    print(jsonDecode(returned.body)["login_attempt"]);
+
     if (jsonDecode(returned.body)["login_attempt"] == 1) {
-      return "Login Successful!";
+      return 1;
     } else {
-      return "Invalid Login. Please try again!";
+      return 0;
     }
-  }
-
-  FToast? fToast;
-
-  @override
-  void initState() {
-    super.initState();
-    fToast = FToast();
-    fToast?.init(context);
   }
 
   _showToast(String toastMessage) {
@@ -114,9 +114,13 @@ class _LoginState extends State<Login> {
         SizedBox(height: 20),
         ElevatedButton(
           onPressed: () async {
-            String toastString = await _postLogin();
+            int toastCode = await _postLogin();
             setState(() {
-              _showToast(toastString);
+              if (toastCode == 1) {
+                _showToast("Login Successful!");
+              } else {
+                _showToast("Invalid Login Details. Please try again!");
+              }
             });
           },
           child: Text("Log In"),
