@@ -165,10 +165,8 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(
-                          crnSearch ? Colors.yellow : Colors.white),
-                      textStyle: MaterialStateProperty.all(
-                          TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(crnSearch ? Colors.amber : Colors.white),
+                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = true;
@@ -181,10 +179,8 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(
-                          courseCode ? Colors.yellow : Colors.white),
-                      textStyle: MaterialStateProperty.all(
-                          TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(courseCode ? Colors.amber : Colors.white),
+                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = false;
@@ -197,10 +193,8 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(
-                          profSearch ? Colors.yellow : Colors.white),
-                      textStyle: MaterialStateProperty.all(
-                          TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(profSearch ? Colors.amber : Colors.white),
+                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = false;
