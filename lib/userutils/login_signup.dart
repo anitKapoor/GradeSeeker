@@ -86,6 +86,23 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Card(
       child: Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(
+                style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all(Colors.black),
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                    textStyle: MaterialStateProperty.all(
+                        TextStyle(color: Colors.black))),
+                onPressed: () {
+                  setState(() {
+                    widget._hideLogin();
+                  });
+                },
+                child: Text("X"))
+          ],
+        ),
         SizedBox(height: 50),
         RichText(text: TextSpan(text: 'Login', style: TextStyle(fontSize: 50))),
         SizedBox(height: 50),
@@ -223,69 +240,85 @@ class _SignupState extends State<Signup> {
         elevation: 2,
         shadowColor: Colors.black12,
         shape: RoundedRectangleBorder(),
-        child: Directionality(
-            textDirection: TextDirection.ltr,
-            child: Column(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(height: 20),
-                RichText(
-                    text: TextSpan(
-                        text: "Create account for GradeSeeker",
-                        style: TextStyle(fontSize: 50))),
-                SizedBox(height: 50),
-                TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Email ID'),
-                  controller: emailIDController,
-                ),
-                SizedBox(height: 20),
-                TextField(
-                    obscureText: _obscurePassword,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          // Based on passwordVisible state choose the icon
-                          _obscurePassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Theme.of(context).primaryColorDark,
-                        ),
-                        onPressed: () {
-                          // Update the state i.e. toogle the state of passwordVisible variable
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
-                      ),
-                    )),
-                SizedBox(height: 20),
-                TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'First Name'),
-                  controller: fnameController,
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Last Name'),
-                  controller: lnameController,
-                ),
-                SizedBox(height: 50),
                 ElevatedButton(
-                    onPressed: () async {
-                      String signupString = await _postSignIn();
+                    style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        backgroundColor: MaterialStateProperty.all(Colors.red),
+                        textStyle: MaterialStateProperty.all(
+                            TextStyle(color: Colors.black))),
+                    onPressed: () {
                       setState(() {
-                        _showToast(signupString);
+                        widget._hideSignup();
                       });
                     },
-                    child: Text("Sign Up"))
+                    child: Text("X"))
               ],
-            )));
+            ),
+            SizedBox(height: 20),
+            RichText(
+                text: TextSpan(
+                    text: "Create account for GradeSeeker",
+                    style: TextStyle(fontSize: 50))),
+            SizedBox(height: 50),
+            TextField(
+              obscureText: false,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: 'Email ID'),
+              controller: emailIDController,
+            ),
+            SizedBox(height: 20),
+            TextField(
+                obscureText: _obscurePassword,
+                controller: passwordController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      // Based on passwordVisible state choose the icon
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    onPressed: () {
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
+                )),
+            SizedBox(height: 20),
+            TextField(
+              obscureText: false,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: 'First Name'),
+              controller: fnameController,
+            ),
+            SizedBox(height: 20),
+            TextField(
+              obscureText: false,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: 'Last Name'),
+              controller: lnameController,
+            ),
+            SizedBox(height: 30),
+            ElevatedButton(
+                onPressed: () async {
+                  String signupString = await _postSignIn();
+                  setState(() {
+                    _showToast(signupString);
+                  });
+                },
+                child: Text("Sign Up"))
+          ],
+        ));
   }
 }
