@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
                 ElevatedButton(
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(Colors.black),
-                        backgroundColor: MaterialStateProperty.all(isBrowse ? Colors.yellow : Colors.white),
+                        backgroundColor: MaterialStateProperty.all(isBrowse ? Colors.amber : Colors.white),
                         textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                     onPressed: () {
                       setState(() {
@@ -49,11 +49,11 @@ class _HomeState extends State<Home> {
                         isBrowse = true;
                       });
                     },
-                    child: Text("Browse all Classes")),
+                    child: Text("Browse")),
                 ElevatedButton(
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(Colors.black),
-                        backgroundColor: MaterialStateProperty.all(isSearch ? Colors.yellow : Colors.white),
+                        backgroundColor: MaterialStateProperty.all(isSearch ? Colors.amber : Colors.white),
                         textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                     onPressed: () {
                       setState(() {
@@ -62,11 +62,11 @@ class _HomeState extends State<Home> {
                         isBrowse = false;
                       });
                     },
-                    child: Text("Search for Classes")),
+                    child: Text("Search")),
                 ElevatedButton(
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(Colors.black),
-                        backgroundColor: MaterialStateProperty.all(isEditProfile ? Colors.yellow : Colors.white),
+                        backgroundColor: MaterialStateProperty.all(isEditProfile ? Colors.amber : Colors.white),
                         textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                     onPressed: () {
                       setState(() {
