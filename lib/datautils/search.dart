@@ -106,9 +106,8 @@ class _SearchState extends State<Search> {
       for (dynamic data in jsonobjs) {
         toReturn.add(DataRow(cells: <DataCell>[
           DataCell(Text(data["courseCode"])),
-          DataCell(
-            Text(data["courseTitle"]),
-          )
+          DataCell(Text(data["courseTitle"])),
+          DataCell(Text(data["crn"].toString()))
         ]));
       }
     } else {
@@ -248,7 +247,8 @@ class _SearchState extends State<Search> {
                   : (displayCourseTable
                       ? DataTable(columns: const <DataColumn>[
                           DataColumn(label: Text("Course Code")),
-                          DataColumn(label: Text("Course Title"))
+                          DataColumn(label: Text("Course Title")),
+                          DataColumn(label: Text("CRN"))
                         ], rows: getRows())
                       : DataTable(columns: const <DataColumn>[
                           DataColumn(
