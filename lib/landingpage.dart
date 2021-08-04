@@ -48,7 +48,10 @@ class _LandingPageState extends State<LandingPage> {
               const Text(
                 "Grade Seeker",
                 textDirection: TextDirection.ltr,
-                style: TextStyle(fontSize: 80, color: Colors.black),
+                style: TextStyle(
+                    fontSize: 80,
+                    color: Colors.black,
+                    decoration: TextDecoration.none),
               ),
               SizedBox(height: 20),
               Row(

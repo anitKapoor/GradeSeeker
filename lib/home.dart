@@ -28,6 +28,13 @@ class _HomeState extends State<Home> {
         onWillPop: () async => false,
         child: Column(
           children: [
+            SizedBox(height: 20),
+            Text(
+              "Welcome back ${args.userID}!",
+              style: TextStyle(
+                  color: Colors.black, decoration: TextDecoration.none),
+            ),
+            SizedBox(height: 20),
             ButtonBar(
               mainAxisSize: MainAxisSize.min,
               children: [
