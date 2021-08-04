@@ -9,13 +9,7 @@ class ClassesPage extends StatefulWidget {
   final String title;
   final int crn;
   final double av;
-  const ClassesPage(
-      {Key? key,
-      required this.code,
-      required this.title,
-      required this.crn,
-      required this.av})
-      : super(key: key);
+  const ClassesPage({Key? key, required this.code, required this.title, required this.crn, required this.av}) : super(key: key);
 
   @override
   _ClassesPageState createState() => _ClassesPageState();
@@ -27,6 +21,9 @@ class _ClassesPageState extends State<ClassesPage> {
   String perc = "";
   bool render_courses = false;
   bool render_stats = false;
+  bool render_profs = false;
+  String goodProf = "";
+  String badProf = "";
 
   @override
   void initState() {
@@ -37,16 +34,14 @@ class _ClassesPageState extends State<ClassesPage> {
   void pop() async {
     await newGetData("profs");
     await newGetData("stats");
+    await newGetData("best");
   }
 
   Future newGetData(String Cat) async {
     if (Cat == "profs") {
       var response = await http.post(
         Uri.parse(flaskPath + "/classes"),
-        headers: {
-          "Accept": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        },
+        headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
         body: {
           "cat": Cat,
           "crn": widget.crn.toString(),
@@ -61,10 +56,7 @@ class _ClassesPageState extends State<ClassesPage> {
     if (Cat == "stats") {
       var response = await http.post(
         Uri.parse(flaskPath + "/classes"),
-        headers: {
-          "Accept": "application/json",
-          "Access-Control-Allow-Origin": "*"
-        },
+        headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
         body: {
           "cat": Cat,
           "crn": widget.crn.toString(),
@@ -75,6 +67,22 @@ class _ClassesPageState extends State<ClassesPage> {
       perc = datafromJSON[0]['perc'].toString();
       setState(() {
         render_stats = true;
+      });
+    }
+    if (Cat == "best") {
+      var response = await http.post(
+        Uri.parse(flaskPath + "/classes"),
+        headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+        body: {
+          "cat": Cat,
+          "crn": widget.code,
+        },
+      );
+      var datafromJSON = json.decode(response.body);
+      goodProf = datafromJSON['b1']['firstName'] + ' ' + datafromJSON['b1']['lastName'];
+      badProf = datafromJSON['b2']['firstName'] + ' ' + datafromJSON['b2']['lastName'];
+      setState(() {
+        render_profs = true;
       });
     }
     return "successful";
@@ -124,16 +132,22 @@ class _ClassesPageState extends State<ClassesPage> {
               ),
               Align(
                 child: Container(
-                  child: render_stats
-                      ? Text("Standard Deviation : " + stdDev)
-                      : Text(""),
+                  child: render_stats ? Text("Standard Deviation : " + stdDev) : Text(""),
                 ),
               ),
               Align(
                 child: Container(
-                  child: render_stats
-                      ? Text("Percentage of 4.0's achieved : " + perc)
-                      : Text(""),
+                  child: render_stats ? Text("Percentage of 4.0's achieved : " + perc) : Text(""),
+                ),
+              ),
+              Align(
+                child: Container(
+                  child: render_profs ? Text("Best professor teaching Course with >=4.0 rating : " + goodProf) : Text(""),
+                ),
+              ),
+              Align(
+                child: Container(
+                  child: render_profs ? Text("Best professor teaching Course with <4.0 rating : " + badProf) : Text(""),
                 ),
               ),
               Align(
@@ -157,8 +171,7 @@ class _ClassesPageState extends State<ClassesPage> {
                                 ),
                               )),
                             ],
-                            rows: List.generate(professors.length,
-                                (index) => (_getDataRow(professors[index]))),
+                            rows: List.generate(professors.length, (index) => (_getDataRow(professors[index]))),
                           ),
                         )
                       : Container(),
