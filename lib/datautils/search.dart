@@ -17,7 +17,10 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   bool crnSearch = true, courseCode = false, profSearch = false;
-  bool displayCRNTable = false, displayCourseTable = false, displayProfTable = false, isDataReady = false;
+  bool displayCRNTable = false,
+      displayCourseTable = false,
+      displayProfTable = false,
+      isDataReady = false;
 
   dynamic jsonobjs;
 
@@ -90,7 +93,7 @@ class _SearchState extends State<Search> {
                       code: data["courseCode"],
                       title: data["courseTitle"],
                       crn: data["crn"],
-                      av: data["av"], // PANAV ADD AVERAGE GRADE TO QUERY
+                      av: data["av"],
                     ),
                   ),
                 );
@@ -117,7 +120,9 @@ class _SearchState extends State<Search> {
               DataCell(Text(data["CourseCode"])),
               DataCell(Text(data["courseTitle"])),
               DataCell(Text(data["semester"])),
-              DataCell(Text(data["firstName"].toString() + " " + data["lastName"].toString())),
+              DataCell(Text(data["firstName"].toString() +
+                  " " +
+                  data["lastName"].toString())),
               DataCell(
                 IconButton(
                   icon: const Icon(
@@ -128,9 +133,11 @@ class _SearchState extends State<Search> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProfsPage(
-                          id: data['id'], // PANAV ADD PROFS ID
+                          id: data['id'],
                           name: data["firstName"] + " " + data["lastName"],
-                          rating: data['rating'], // PANAV ADD RATING TO THE QUERY PLEASE
+                          rating: data['rating'] == 0
+                              ? "N/A"
+                              : data['rating'].toString(),
                           userVal: widget.args,
                         ),
                       ),
@@ -158,8 +165,10 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(crnSearch ? Colors.yellow : Colors.white),
-                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(
+                          crnSearch ? Colors.yellow : Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                          TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = true;
@@ -172,8 +181,10 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(courseCode ? Colors.yellow : Colors.white),
-                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(
+                          courseCode ? Colors.yellow : Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                          TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = false;
@@ -186,8 +197,10 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(profSearch ? Colors.yellow : Colors.white),
-                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(
+                          profSearch ? Colors.yellow : Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                          TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = false;
@@ -207,7 +220,9 @@ class _SearchState extends State<Search> {
                 child: TextField(
                   controller: searchController,
                   obscureText: false,
-                  decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Enter Search Query'),
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter Search Query'),
                 ),
               ),
               SizedBox(width: 50),
@@ -231,7 +246,10 @@ class _SearchState extends State<Search> {
                       )),
                     ], rows: getRows())
                   : (displayCourseTable
-                      ? DataTable(columns: const <DataColumn>[DataColumn(label: Text("Course Code")), DataColumn(label: Text("Course Title"))], rows: getRows())
+                      ? DataTable(columns: const <DataColumn>[
+                          DataColumn(label: Text("Course Code")),
+                          DataColumn(label: Text("Course Title"))
+                        ], rows: getRows())
                       : DataTable(columns: const <DataColumn>[
                           DataColumn(
                             label: Text("Course Code"),
