@@ -26,6 +26,17 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   bool _displayLogin = false;
   bool _displaySignup = false;
+  void _hideLogin() {
+    setState(() {
+      _displayLogin = false;
+    });
+  }
+
+  void _hideSignup() {
+    setState(() {
+      _displaySignup = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +87,14 @@ class _LandingPageState extends State<LandingPage> {
         _displayLogin
             ? Align(
                 alignment: Alignment.center,
-                child: Container(child: Login(), width: 500, height: 500))
+                child: Container(
+                    child: Login(_hideLogin), width: 500, height: 500))
             : Container(),
         _displaySignup
             ? Align(
                 alignment: Alignment.center,
-                child: Container(child: Signup(), width: 500, height: 800))
+                child: Container(
+                    child: Signup(_hideSignup), width: 500, height: 800))
             : Container()
       ],
     );

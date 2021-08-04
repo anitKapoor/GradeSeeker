@@ -8,6 +8,9 @@ import 'package:gradeseeker/home.dart';
 import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
+  final VoidCallback _hideLogin;
+
+  Login(this._hideLogin);
   _LoginState createState() => _LoginState();
 }
 
@@ -121,6 +124,8 @@ class _LoginState extends State<Login> {
             setState(() {
               if (toastCode == 1) {
                 print("here");
+                widget._hideLogin();
+
                 _showToast("Login Successful!");
                 Navigator.pushNamed(context, Home.route,
                     arguments: UserArgs(setUserName, false, true));
@@ -137,6 +142,9 @@ class _LoginState extends State<Login> {
 }
 
 class Signup extends StatefulWidget {
+  final VoidCallback _hideSignup;
+
+  Signup(this._hideSignup);
   _SignupState createState() => _SignupState();
 }
 
@@ -200,6 +208,7 @@ class _SignupState extends State<Signup> {
               "user_lname": lnameController.text
             }));
     if (jsonDecode(returned.body)["signup_attempt"] == 1) {
+      widget._hideSignup();
       return "Signup Successful!";
     } else if (jsonDecode(returned.body)["error"] != null) {
       return "error: ${jsonDecode(returned.body)["error"]}";
