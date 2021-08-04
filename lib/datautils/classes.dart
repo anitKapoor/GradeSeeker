@@ -15,8 +15,10 @@ class ClassesPage extends StatefulWidget {
 
 class _ClassesPageState extends State<ClassesPage> {
   List professors = [];
-  double stdDev = 0.0;
+  String stdDev = "";
+  String perc = "";
   bool render_courses = false;
+  bool render_stats = false;
 
   @override
   void initState() {
@@ -25,22 +27,42 @@ class _ClassesPageState extends State<ClassesPage> {
   }
 
   void pop() async {
-    await newGetData();
+    await newGetData("profs");
+    await newGetData("stats");
   }
 
-  Future newGetData() async {
-    var response = await http.post(
-      Uri.parse("http://127.0.0.1:5000/classes"),
-      headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
-      body: {
-        "crn": widget.crn.toString(),
-      },
-    );
-    var datafromJSON = json.decode(response.body) as List<dynamic>;
-    professors = datafromJSON;
-    setState(() {
-      render_courses = true;
-    });
+  Future newGetData(String Cat) async {
+    if (Cat == "profs") {
+      var response = await http.post(
+        Uri.parse("http://127.0.0.1:5000/classes"),
+        headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+        body: {
+          "cat": Cat,
+          "crn": widget.crn.toString(),
+        },
+      );
+      var datafromJSON = json.decode(response.body) as List<dynamic>;
+      professors = datafromJSON;
+      setState(() {
+        render_courses = true;
+      });
+    }
+    if (Cat == "stats") {
+      var response = await http.post(
+        Uri.parse("http://127.0.0.1:5000/classes"),
+        headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+        body: {
+          "cat": Cat,
+          "crn": widget.crn.toString(),
+        },
+      );
+      var datafromJSON = json.decode(response.body) as List<dynamic>;
+      stdDev = datafromJSON[0]['std'].toString();
+      perc = datafromJSON[0]['perc'].toString();
+      setState(() {
+        render_stats = true;
+      });
+    }
     return "successful";
   }
 
@@ -88,7 +110,12 @@ class _ClassesPageState extends State<ClassesPage> {
               ),
               Align(
                 child: Container(
-                  child: Text("Standard Deviation : " + stdDev.toStringAsFixed(2)),
+                  child: render_stats ? Text("Standard Deviation : " + stdDev) : Text(""),
+                ),
+              ),
+              Align(
+                child: Container(
+                  child: render_stats ? Text("Percentage of 4.0's achieved : " + perc) : Text(""),
                 ),
               ),
               Align(
