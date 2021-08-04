@@ -78,8 +78,6 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        child: Directionality(
-      textDirection: TextDirection.ltr,
       child: Column(
         children: [
           SizedBox(height: 30),
@@ -154,6 +152,6 @@ class _SearchState extends State<Search> {
               : Container()
         ],
       ),
-    ));
+    );
   }
 }
