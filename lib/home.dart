@@ -31,8 +31,7 @@ class _HomeState extends State<Home> {
             SizedBox(height: 20),
             Text(
               "Welcome back ${args.userID}!",
-              style: TextStyle(
-                  color: Colors.black, decoration: TextDecoration.none),
+              style: TextStyle(color: Colors.black, decoration: TextDecoration.none),
             ),
             SizedBox(height: 20),
             ButtonBar(
@@ -40,12 +39,9 @@ class _HomeState extends State<Home> {
               children: [
                 ElevatedButton(
                     style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        backgroundColor: MaterialStateProperty.all(
-                            isBrowse ? Colors.yellow : Colors.white),
-                        textStyle: MaterialStateProperty.all(
-                            TextStyle(color: Colors.black))),
+                        foregroundColor: MaterialStateProperty.all(Colors.black),
+                        backgroundColor: MaterialStateProperty.all(isBrowse ? Colors.yellow : Colors.white),
+                        textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                     onPressed: () {
                       setState(() {
                         isEditProfile = false;
@@ -56,12 +52,9 @@ class _HomeState extends State<Home> {
                     child: Text("Browse all Classes")),
                 ElevatedButton(
                     style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        backgroundColor: MaterialStateProperty.all(
-                            isSearch ? Colors.yellow : Colors.white),
-                        textStyle: MaterialStateProperty.all(
-                            TextStyle(color: Colors.black))),
+                        foregroundColor: MaterialStateProperty.all(Colors.black),
+                        backgroundColor: MaterialStateProperty.all(isSearch ? Colors.yellow : Colors.white),
+                        textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                     onPressed: () {
                       setState(() {
                         isEditProfile = false;
@@ -72,12 +65,9 @@ class _HomeState extends State<Home> {
                     child: Text("Search for Classes")),
                 ElevatedButton(
                     style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        backgroundColor: MaterialStateProperty.all(
-                            isEditProfile ? Colors.yellow : Colors.white),
-                        textStyle: MaterialStateProperty.all(
-                            TextStyle(color: Colors.black))),
+                        foregroundColor: MaterialStateProperty.all(Colors.black),
+                        backgroundColor: MaterialStateProperty.all(isEditProfile ? Colors.yellow : Colors.white),
+                        textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                     onPressed: () {
                       setState(() {
                         isEditProfile = true;
@@ -88,11 +78,9 @@ class _HomeState extends State<Home> {
                     child: Text("Edit User Profile")),
                 ElevatedButton(
                     style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
+                        foregroundColor: MaterialStateProperty.all(Colors.black),
                         backgroundColor: MaterialStateProperty.all(Colors.red),
-                        textStyle: MaterialStateProperty.all(
-                            TextStyle(color: Colors.black))),
+                        textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -104,15 +92,10 @@ class _HomeState extends State<Home> {
               shrinkWrap: true,
               children: [
                 isSearch
-                    ? Search()
-                    : (isBrowse
-                        ? BrowsePage(args)
-                        : Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                                child: UserProfile(args),
-                                width: 500,
-                                height: 800)))
+                    ? Search(
+                        args,
+                      )
+                    : (isBrowse ? BrowsePage(args) : Align(alignment: Alignment.center, child: Container(child: UserProfile(args), width: 500, height: 800)))
               ],
             )
           ],
