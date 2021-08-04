@@ -4,37 +4,26 @@ import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          ),
-      home: UserProfile()));
-}
+import '../arguments.dart';
 
 class UserProfile extends StatefulWidget {
-  _UserProfileState createState() => _UserProfileState();
+  final UserArgs currUser;
+  UserProfile(this.currUser);
+
+  _UserProfileState createState() => _UserProfileState(currUser);
 }
 
 class _UserProfileState extends State<UserProfile> {
   bool _obscurePassword = true;
-  String userId = "124@gmail.com";
 
   final passwordController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
 
   FToast? fToast;
+  UserArgs? currUser;
 
+  _UserProfileState(this.currUser);
   @override
   void initState() {
     populateInfo();
@@ -79,16 +68,16 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   Future<bool> _changeUserInfo() async {
-    http.Response returned =
-        await http.post(Uri.parse("http://127.0.0.1:5000/userprofile=$userId"),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(<String, String>{
-              "user_upass": hashVal(passwordController.text),
-              "user_ufname": firstNameController.text,
-              "user_ulname": lastNameController.text
-            }));
+    http.Response returned = await http.post(
+        Uri.parse("http://127.0.0.1:5000/userprofile=${currUser!.userID}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "user_upass": hashVal(passwordController.text),
+          "user_ufname": firstNameController.text,
+          "user_ulname": lastNameController.text
+        }));
     dynamic jsonobjs = jsonDecode(returned.body);
     if (jsonobjs["update"] == 1) {
       return true;
@@ -99,7 +88,7 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<bool> _getUserInfo() async {
     http.Response returned = await http.get(
-        Uri.parse("http://127.0.0.1:5000/userprofile=$userId"),
+        Uri.parse("http://127.0.0.1:5000/userprofile=${currUser!.userID}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
@@ -115,7 +104,7 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<bool> _deleteUser() async {
     http.Response returned = await http.post(
-        Uri.parse("http://127.0.0.1:5000/delete=$userId"),
+        Uri.parse("http://127.0.0.1:5000/delete=${currUser!.userID}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
