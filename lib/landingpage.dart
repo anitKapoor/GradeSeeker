@@ -16,16 +16,16 @@ void main() {
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
           ),
-      home: HomePage()));
+      home: LandingPage()));
 }
 
-class HomePage extends StatefulWidget {
+class LandingPage extends StatefulWidget {
   @override
   static const String route = '/';
-  _HomePageState createState() => _HomePageState();
+  _LandingPageState createState() => _LandingPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _LandingPageState extends State<LandingPage> {
   bool _isLoggedIn = false;
   bool _isGuestUser = false;
 
