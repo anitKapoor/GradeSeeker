@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradeseeker/arguments.dart';
+import 'package:gradeseeker/database.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'profs.dart';
@@ -39,7 +40,7 @@ class _SelectionRow extends State<CategoryChoice> {
   Future<String> getData() async {
     String table = _profButton ? "professors" : "courses";
     var response = await http.post(
-      Uri.parse("http://127.0.0.1:5000/browse"),
+      Uri.parse(flaskPath + "/browse"),
       headers: {
         "Accept": "application/json",
         "Access-Control-Allow-Origin": "*"

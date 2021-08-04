@@ -5,6 +5,8 @@ import 'package:gradeseeker/arguments.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../database.dart';
+
 class ProfsPage extends StatefulWidget {
   final int id;
   final String name;
@@ -50,7 +52,7 @@ class _ProfsPageState extends State<ProfsPage> {
 
   Future newGetData(String category) async {
     var response = await http.post(
-      Uri.parse("http://127.0.0.1:5000/prof"),
+      Uri.parse(flaskPath + "/prof"),
       headers: {
         "Accept": "application/json",
         "Access-Control-Allow-Origin": "*"
@@ -81,7 +83,7 @@ class _ProfsPageState extends State<ProfsPage> {
     var response;
     if (choice == "get") {
       response = await http.post(
-        Uri.parse("http://127.0.0.1:5000/getComm"),
+        Uri.parse(flaskPath + "/getComm"),
         headers: {
           "Accept": "application/json",
           "Access-Control-Allow-Origin": "*"
@@ -97,7 +99,7 @@ class _ProfsPageState extends State<ProfsPage> {
       });
     }
     if (choice == "post") {
-      response = await http.post(Uri.parse("http://127.0.0.1:5000/postComm"),
+      response = await http.post(Uri.parse(flaskPath + "/postComm"),
           headers: <String, String>{
             "Accept": "application/json",
             "Access-Control-Allow-Origin": "*",

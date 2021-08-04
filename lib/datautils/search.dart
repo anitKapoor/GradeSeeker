@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../database.dart';
+
 class Search extends StatefulWidget {
   _SearchState createState() => _SearchState();
 }
@@ -35,7 +37,7 @@ class _SearchState extends State<Search> {
       searchPath = "professor/" + searchPath;
     }
 
-    String url = "http://127.0.0.1:5000/search/$searchPath";
+    String url = flaskPath + "/search/$searchPath";
     http.Response response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
