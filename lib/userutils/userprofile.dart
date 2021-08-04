@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -55,7 +56,7 @@ class _UserProfileState extends State<UserProfile> {
     fToast?.showToast(
       child: toast,
       gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 3),
+      toastDuration: Duration(seconds: 2),
     );
   }
 
@@ -176,17 +177,21 @@ class _UserProfileState extends State<UserProfile> {
                   });
                 },
                 child: Text("Save Changes")),
-            SizedBox(height: 50),
+            SizedBox(height: 30),
             ElevatedButton(
                 onPressed: () async {
                   bool status = await _deleteUser();
                   setState(() {
                     if (status) {
                       _showToast("User Deleted!");
+                      Future.delayed(Duration(seconds: 3), () {
+                        Navigator.pop(context);
+                      });
                     }
                   });
                 },
                 child: Text("Delete User")),
+            SizedBox(height: 30),
           ],
         ),
       ),
