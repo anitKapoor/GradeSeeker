@@ -13,10 +13,8 @@ class BrowsePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints viewportConstraints) {
-      return Container(
-          child: CategoryChoice(args), constraints: viewportConstraints);
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints viewportConstraints) {
+      return SingleChildScrollView(child: Container(child: CategoryChoice(args)));
     });
   }
 }
@@ -40,10 +38,7 @@ class _SelectionRow extends State<CategoryChoice> {
     String table = _profButton ? "professors" : "courses";
     var response = await http.post(
       Uri.parse("http://127.0.0.1:5000/browse"),
-      headers: {
-        "Accept": "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
+      headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
       body: {
         "Category": table,
         "Offset": _offset.toString(),
@@ -89,11 +84,7 @@ class _SelectionRow extends State<CategoryChoice> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProfsPage(
-                            id: data['id'],
-                            name: data["firstName"] + " " + data["lastName"],
-                            rating: rat,
-                            userVal: userVal),
+                        builder: (context) => ProfsPage(id: data['id'], name: data["firstName"] + " " + data["lastName"], rating: rat, userVal: userVal),
                       ),
                     );
                   },
@@ -145,25 +136,19 @@ class _SelectionRow extends State<CategoryChoice> {
                 },
                 child: Text(
                   "By Professors",
-                  style: _profButton
-                      ? TextStyle(color: Colors.white)
-                      : TextStyle(color: Colors.amber[200]),
+                  style: _profButton ? TextStyle(color: Colors.white) : TextStyle(color: Colors.amber[200]),
                   textScaleFactor: 1.5,
                 ),
                 style: ButtonStyle(
-                  backgroundColor: _profButton
-                      ? MaterialStateProperty.all<Color>(Colors.amber)
-                      : MaterialStateProperty.all<Color>(Colors.white),
-                  padding:
-                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.amber[200]!,
-                            style: BorderStyle.solid,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0))),
+                  backgroundColor: _profButton ? MaterialStateProperty.all<Color>(Colors.amber) : MaterialStateProperty.all<Color>(Colors.white),
+                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.amber[200]!,
+                        style: BorderStyle.solid,
+                        width: 1.5,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0))),
                 ),
               ),
             ),
@@ -179,25 +164,19 @@ class _SelectionRow extends State<CategoryChoice> {
                 },
                 child: Text(
                   "By Course Name",
-                  style: !_profButton
-                      ? TextStyle(color: Colors.white)
-                      : TextStyle(color: Colors.amber[200]),
+                  style: !_profButton ? TextStyle(color: Colors.white) : TextStyle(color: Colors.amber[200]),
                   textScaleFactor: 1.5,
                 ),
                 style: ButtonStyle(
-                  backgroundColor: !_profButton
-                      ? MaterialStateProperty.all<Color>(Colors.amber)
-                      : MaterialStateProperty.all<Color>(Colors.white),
-                  padding:
-                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.amber[200]!,
-                            style: BorderStyle.solid,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0))),
+                  backgroundColor: !_profButton ? MaterialStateProperty.all<Color>(Colors.amber) : MaterialStateProperty.all<Color>(Colors.white),
+                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.amber[200]!,
+                        style: BorderStyle.solid,
+                        width: 1.5,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0))),
                 ),
               ),
               margin: EdgeInsets.only(right: 5, left: 5),
@@ -246,8 +225,7 @@ class _SelectionRow extends State<CategoryChoice> {
                         width: 1510 * 0.1,
                       )),
                     ],
-                    rows: List.generate(results.length,
-                        (index) => (_getDataRow(results[index]))),
+                    rows: List.generate(results.length, (index) => (_getDataRow(results[index]))),
                   )
                 : DataTable(
                     columns: <DataColumn>[
@@ -278,8 +256,7 @@ class _SelectionRow extends State<CategoryChoice> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )),
                     ],
-                    rows: List.generate(results.length,
-                        (index) => (_getDataRow(results[index]))),
+                    rows: List.generate(results.length, (index) => (_getDataRow(results[index]))),
                   ),
           ),
         ),
@@ -299,18 +276,15 @@ class _SelectionRow extends State<CategoryChoice> {
                   });
                 },
                 style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  padding:
-                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.amber[200]!,
-                            style: BorderStyle.solid,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0))),
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.amber[200]!,
+                        style: BorderStyle.solid,
+                        width: 1.5,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0))),
                 ),
               ),
               onTap: () {},
@@ -328,18 +302,15 @@ class _SelectionRow extends State<CategoryChoice> {
                   });
                 },
                 style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  padding:
-                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.amber[200]!,
-                            style: BorderStyle.solid,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0))),
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.amber[200]!,
+                        style: BorderStyle.solid,
+                        width: 1.5,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0))),
                 ),
               ),
             ),
@@ -358,18 +329,15 @@ class _SelectionRow extends State<CategoryChoice> {
                   });
                 },
                 style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  padding:
-                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: Colors.amber[200]!,
-                            style: BorderStyle.solid,
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0))),
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: Colors.amber[200]!,
+                        style: BorderStyle.solid,
+                        width: 1.5,
+                      ),
+                      borderRadius: BorderRadius.circular(5.0))),
                 ),
               ),
             ),
