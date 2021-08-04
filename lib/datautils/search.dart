@@ -4,37 +4,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-void main() {
-  runApp(MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          ),
-      home: Search()));
-}
-
 class Search extends StatefulWidget {
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
-  bool crnSearch = true, courseCode = false;
-  bool displayCRNTable = false, isDataReady = false;
+  bool crnSearch = true, courseCode = false, profSearch = false;
+  bool displayCRNTable = false,
+      displayCourseTable = false,
+      displayProfTable = false,
+      isDataReady = false;
+
   dynamic jsonobjs;
 
   final searchController = TextEditingController();
 
   Future<String> searchData() async {
-    String url =
-        "http://127.0.0.1:5000/search/${crnSearch ? "crn/${searchController.text}" : "class/${searchController.text}"}";
+    String searchPath = "";
+    if (crnSearch) {
+      searchPath = "crn/${searchController.text}";
+    } else if (courseCode) {
+      searchPath = "class/${searchController.text}";
+    } else {
+      List<String> profName = (searchController.text).trim().split(' ');
+      if (profName.length == 2) {
+        searchPath = profName[0] + ',' + profName[1];
+      } else {
+        searchPath = profName[0] + ' ' + profName[1] + ',' + profName[2];
+      }
+      searchPath = "professor/" + searchPath;
+    }
+
+    String url = "http://127.0.0.1:5000/search/$searchPath";
     http.Response response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -46,8 +47,16 @@ class _SearchState extends State<Search> {
     setState(() {
       if (crnSearch) {
         displayCRNTable = true;
+        displayCourseTable = false;
+        displayProfTable = false;
+      } else if (courseCode) {
+        displayCRNTable = false;
+        displayCourseTable = true;
+        displayProfTable = false;
       } else {
         displayCRNTable = false;
+        displayCourseTable = false;
+        displayProfTable = true;
       }
       isDataReady = true;
     });
@@ -64,11 +73,23 @@ class _SearchState extends State<Search> {
           DataCell(Text(data["courseTitle"]))
         ]));
       }
-    } else {
+    } else if (displayCourseTable) {
       for (dynamic data in jsonobjs) {
         toReturn.add(DataRow(cells: <DataCell>[
           DataCell(Text(data["courseCode"])),
           DataCell(Text(data["courseTitle"]))
+        ]));
+      }
+    } else {
+      print(jsonobjs);
+      for (dynamic data in jsonobjs) {
+        toReturn.add(DataRow(cells: <DataCell>[
+          DataCell(Text(data["CourseCode"])),
+          DataCell(Text(data["courseTitle"])),
+          DataCell(Text(data["semester"])),
+          DataCell(Text(data["firstName"].toString() +
+              " " +
+              data["lastName"].toString())),
         ]));
       }
     }
@@ -95,6 +116,7 @@ class _SearchState extends State<Search> {
                     setState(() {
                       crnSearch = true;
                       courseCode = false;
+                      profSearch = false;
                     });
                   },
                   child: Text("Search by CRN")),
@@ -110,9 +132,26 @@ class _SearchState extends State<Search> {
                     setState(() {
                       crnSearch = false;
                       courseCode = true;
+                      profSearch = false;
                     });
                   },
-                  child: Text("Search by Course Code"))
+                  child: Text("Search by Course Code")),
+              SizedBox(width: 20),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all(Colors.black),
+                      backgroundColor: MaterialStateProperty.all(
+                          profSearch ? Colors.yellow : Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                          TextStyle(color: Colors.black))),
+                  onPressed: () {
+                    setState(() {
+                      crnSearch = false;
+                      courseCode = false;
+                      profSearch = true;
+                    });
+                  },
+                  child: Text("Search by Professor"))
             ],
           ),
           SizedBox(height: 50),
@@ -139,16 +178,23 @@ class _SearchState extends State<Search> {
           ),
           SizedBox(height: 50),
           isDataReady
-              ? (!displayCRNTable
+              ? (displayCRNTable
                   ? DataTable(columns: const <DataColumn>[
-                      DataColumn(label: Text("Course Code")),
-                      DataColumn(label: Text("Course Title"))
-                    ], rows: getRows())
-                  : DataTable(columns: const <DataColumn>[
                       DataColumn(label: Text("CRN")),
                       DataColumn(label: Text("Course Code")),
                       DataColumn(label: Text("Course Title"))
-                    ], rows: getRows()))
+                    ], rows: getRows())
+                  : (displayCourseTable
+                      ? DataTable(columns: const <DataColumn>[
+                          DataColumn(label: Text("Course Code")),
+                          DataColumn(label: Text("Course Title"))
+                        ], rows: getRows())
+                      : DataTable(columns: const <DataColumn>[
+                          DataColumn(label: Text("Course Code")),
+                          DataColumn(label: Text("Course Title")),
+                          DataColumn(label: Text("Course Semester")),
+                          DataColumn(label: Text("Professor Name")),
+                        ], rows: getRows())))
               : Container()
         ],
       ),
