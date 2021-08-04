@@ -28,6 +28,13 @@ class _HomeState extends State<Home> {
         onWillPop: () async => false,
         child: Column(
           children: [
+            SizedBox(height: 20),
+            Text(
+              "Welcome back ${args.userID}!",
+              style: TextStyle(
+                  color: Colors.black, decoration: TextDecoration.none),
+            ),
+            SizedBox(height: 20),
             ButtonBar(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -98,7 +105,14 @@ class _HomeState extends State<Home> {
               children: [
                 isSearch
                     ? Search()
-                    : (isBrowse ? BrowsePage(args) : UserProfile(args))
+                    : (isBrowse
+                        ? BrowsePage(args)
+                        : Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                                child: UserProfile(args),
+                                width: 500,
+                                height: 800)))
               ],
             )
           ],
