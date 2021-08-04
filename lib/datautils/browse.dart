@@ -91,10 +91,11 @@ class _SelectionRow extends State<CategoryChoice> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProfsPage(
-                            id: data['id'],
-                            name: data["firstName"] + " " + data["lastName"],
-                            rating: rat,
-                            userVal: userVal),
+                          id: data['id'],
+                          name: data["firstName"] + " " + data["lastName"],
+                          rating: rat,
+                          userVal: userVal,
+                        ),
                       ),
                     );
                   },
@@ -114,14 +115,16 @@ class _SelectionRow extends State<CategoryChoice> {
                     ),
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ClassesPage(
-                                    code: data["courseCode"],
-                                    title: data["courseTitle"],
-                                    crn: data["crn"],
-                                    av: data["av"],
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ClassesPage(
+                            code: data["courseCode"],
+                            title: data["courseTitle"],
+                            crn: data["crn"],
+                            av: data["av"],
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ),

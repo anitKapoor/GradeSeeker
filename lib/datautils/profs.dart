@@ -12,13 +12,13 @@ class ProfsPage extends StatefulWidget {
   final String name;
   final String rating;
   final UserArgs userVal;
-  const ProfsPage(
-      {Key? key,
-      required this.id,
-      required this.name,
-      required this.rating,
-      required this.userVal})
-      : super(key: key);
+  const ProfsPage({
+    Key? key,
+    required this.id,
+    required this.name,
+    required this.rating,
+    required this.userVal,
+  }) : super(key: key);
 
   @override
   _ProfsPageState createState() => _ProfsPageState(userVal);
