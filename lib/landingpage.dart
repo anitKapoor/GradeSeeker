@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'userutils/login_signup.dart';
-import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(
@@ -20,15 +19,11 @@ void main() {
 }
 
 class LandingPage extends StatefulWidget {
-  @override
   static const String route = '/';
   _LandingPageState createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
-  bool _isLoggedIn = false;
-  bool _isGuestUser = false;
-
   bool _displayLogin = false;
   bool _displaySignup = false;
 
@@ -74,15 +69,6 @@ class _LandingPageState extends State<LandingPage> {
                       .center //Center Row contents horizontally,
                   ),
               SizedBox(height: 10),
-              ElevatedButton(
-                  onPressed: () {
-                    _isLoggedIn = true;
-                    _isGuestUser = true;
-                  },
-                  child: const Text(
-                    "Continue as Guest",
-                    textDirection: TextDirection.ltr,
-                  ))
             ],
                 mainAxisAlignment: MainAxisAlignment
                     .center //Center Column contents vertically,
