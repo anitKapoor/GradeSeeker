@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
               children: [
                 isSearch
                     ? Search()
-                    : (isBrowse ? BrowsePage() : UserProfile(args))
+                    : (isBrowse ? BrowsePage(args) : UserProfile(args))
               ],
             )
           ],

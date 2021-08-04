@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradeseeker/arguments.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'profs.dart';
@@ -7,27 +8,33 @@ import 'classes.dart';
 final key = new GlobalKey<_SelectionRow>();
 
 class BrowsePage extends StatelessWidget {
-  BrowsePage({Key? key}) : super(key: key);
+  final UserArgs args;
+  BrowsePage(this.args);
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
       return Container(
-          child: CategoryChoice(), constraints: viewportConstraints);
+          child: CategoryChoice(args), constraints: viewportConstraints);
     });
   }
 }
 
 class CategoryChoice extends StatefulWidget {
-  CategoryChoice({Key? key}) : super(key: key);
+  final UserArgs args;
+  CategoryChoice(this.args);
   @override
-  _SelectionRow createState() => _SelectionRow();
+  _SelectionRow createState() => _SelectionRow(args);
 }
 
 class _SelectionRow extends State<CategoryChoice> {
   bool _profButton = true;
   int _offset = 0;
   List results = [];
+  final UserArgs userVal;
+
+  _SelectionRow(this.userVal);
 
   Future<String> getData() async {
     String table = _profButton ? "professors" : "courses";
@@ -83,10 +90,10 @@ class _SelectionRow extends State<CategoryChoice> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ProfsPage(
-                          id: data['id'],
-                          name: data["firstName"] + " " + data["lastName"],
-                          rating: rat,
-                        ),
+                            id: data['id'],
+                            name: data["firstName"] + " " + data["lastName"],
+                            rating: rat,
+                            userVal: userVal),
                       ),
                     );
                   },
