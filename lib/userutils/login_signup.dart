@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gradeseeker/home.dart';
 import 'package:http/http.dart' as http;
 
+import '../database.dart';
+
 class Login extends StatefulWidget {
   final VoidCallback _hideLogin;
 
@@ -38,8 +40,7 @@ class _LoginState extends State<Login> {
   Future<int> _postLogin() async {
     print(hashVal(passwordController.text));
 
-    http.Response returned = await http.post(
-        Uri.parse("http://127.0.0.1:5000/login"),
+    http.Response returned = await http.post(Uri.parse(flaskPath + "/login"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -196,17 +197,16 @@ class _SignupState extends State<Signup> {
   }
 
   Future<String> _postSignIn() async {
-    http.Response returned =
-        await http.post(Uri.parse("http://127.0.0.1:5000/signup"),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(<String, String>{
-              "user_id": emailIDController.text,
-              "user_pass": hashVal(passwordController.text),
-              "user_fname": fnameController.text,
-              "user_lname": lnameController.text
-            }));
+    http.Response returned = await http.post(Uri.parse(flaskPath + "/signup"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "user_id": emailIDController.text,
+          "user_pass": hashVal(passwordController.text),
+          "user_fname": fnameController.text,
+          "user_lname": lnameController.text
+        }));
     if (jsonDecode(returned.body)["signup_attempt"] == 1) {
       widget._hideSignup();
       return "Signup Successful!";

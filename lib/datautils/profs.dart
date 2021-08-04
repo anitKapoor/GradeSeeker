@@ -5,6 +5,8 @@ import 'package:gradeseeker/arguments.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../database.dart';
+
 class ProfsPage extends StatefulWidget {
   final int id;
   final String name;
@@ -50,8 +52,11 @@ class _ProfsPageState extends State<ProfsPage> {
 
   Future newGetData(String category) async {
     var response = await http.post(
-      Uri.parse("http://127.0.0.1:5000/prof"),
-      headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+      Uri.parse(flaskPath + "/prof"),
+      headers: {
+        "Accept": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
       body: {
         "Category": category,
         "ID": widget.id.toString(),
@@ -78,8 +83,11 @@ class _ProfsPageState extends State<ProfsPage> {
     var response;
     if (choice == "get") {
       response = await http.post(
-        Uri.parse("http://127.0.0.1:5000/getComm"),
-        headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+        Uri.parse(flaskPath + "/getComm"),
+        headers: {
+          "Accept": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
         body: {
           "ID": widget.id.toString(),
         },
@@ -91,7 +99,7 @@ class _ProfsPageState extends State<ProfsPage> {
       });
     }
     if (choice == "post") {
-      response = await http.post(Uri.parse("http://127.0.0.1:5000/postComm"),
+      response = await http.post(Uri.parse(flaskPath + "/postComm"),
           headers: <String, String>{
             "Accept": "application/json",
             "Access-Control-Allow-Origin": "*",
@@ -172,7 +180,10 @@ class _ProfsPageState extends State<ProfsPage> {
                 ),
                 Align(
                   child: Container(
-                    child: render_average ? Text("Average GPA in Courses: " + averageGpa.toString()) : Container(),
+                    child: render_average
+                        ? Text(
+                            "Average GPA in Courses: " + averageGpa.toString())
+                        : Container(),
                   ),
                 ),
                 Align(
@@ -195,7 +206,8 @@ class _ProfsPageState extends State<ProfsPage> {
                                 ),
                               )),
                             ],
-                            rows: List.generate(courses.length, (index) => (_getDataRow(courses[index]))),
+                            rows: List.generate(courses.length,
+                                (index) => (_getDataRow(courses[index]))),
                           )
                         : Container(),
                   ),
@@ -215,14 +227,17 @@ class _ProfsPageState extends State<ProfsPage> {
                       child: TextField(
                         controller: commentController,
                         obscureText: false,
-                        decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Enter New Comment'),
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Enter New Comment'),
                       ),
                     ),
                     DropdownButton(
                       value: dropdownvalue,
                       icon: Icon(Icons.keyboard_arrow_down),
                       items: items.map((String items) {
-                        return DropdownMenuItem(value: items, child: Text(items));
+                        return DropdownMenuItem(
+                            value: items, child: Text(items));
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
@@ -235,7 +250,9 @@ class _ProfsPageState extends State<ProfsPage> {
                       child: TextField(
                         controller: crnController,
                         obscureText: false,
-                        decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Enter CRN'),
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Enter CRN'),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -250,8 +267,15 @@ class _ProfsPageState extends State<ProfsPage> {
                 DataTable(
                   headingRowHeight: 0,
                   dividerThickness: 0.00001,
-                  columns: [DataColumn(label: Container()), DataColumn(label: Container()), DataColumn(label: Container())],
-                  rows: render_comments ? List.generate(comments.length, (index) => parseComments(comments[index])) : [],
+                  columns: [
+                    DataColumn(label: Container()),
+                    DataColumn(label: Container()),
+                    DataColumn(label: Container())
+                  ],
+                  rows: render_comments
+                      ? List.generate(comments.length,
+                          (index) => parseComments(comments[index]))
+                      : [],
                 ),
               ],
             ),

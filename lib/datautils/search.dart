@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'classes.dart';
 import 'profs.dart';
 
+import '../database.dart';
+
 class Search extends StatefulWidget {
   final UserArgs args;
   const Search(this.args);
@@ -37,7 +39,7 @@ class _SearchState extends State<Search> {
       searchPath = "professor/" + searchPath;
     }
 
-    String url = "http://127.0.0.1:5000/search/$searchPath";
+    String url = flaskPath + "/search/$searchPath";
     http.Response response = await http.get(
       Uri.parse(url),
       headers: <String, String>{

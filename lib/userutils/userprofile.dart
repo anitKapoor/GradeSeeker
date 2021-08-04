@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 
 import '../arguments.dart';
+import '../database.dart';
 
 class UserProfile extends StatefulWidget {
   final UserArgs currUser;
@@ -70,7 +71,7 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<bool> _changeUserInfo() async {
     http.Response returned = await http.post(
-        Uri.parse("http://127.0.0.1:5000/userprofile=${currUser!.userID}"),
+        Uri.parse(flaskPath + "/userprofile=${currUser!.userID}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -89,7 +90,7 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<bool> _getUserInfo() async {
     http.Response returned = await http.get(
-        Uri.parse("http://127.0.0.1:5000/userprofile=${currUser!.userID}"),
+        Uri.parse(flaskPath + "/userprofile=${currUser!.userID}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
@@ -105,7 +106,7 @@ class _UserProfileState extends State<UserProfile> {
 
   Future<bool> _deleteUser() async {
     http.Response returned = await http.post(
-        Uri.parse("http://127.0.0.1:5000/delete=${currUser!.userID}"),
+        Uri.parse(flaskPath + "/delete=${currUser!.userID}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
