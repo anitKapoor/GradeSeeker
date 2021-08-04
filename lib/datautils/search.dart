@@ -93,7 +93,7 @@ class _SearchState extends State<Search> {
                       code: data["courseCode"],
                       title: data["courseTitle"],
                       crn: data["crn"],
-                      av: data["av"],
+                      av: data["av"]!,
                     ),
                   ),
                 );
@@ -137,7 +137,7 @@ class _SearchState extends State<Search> {
                           name: data["firstName"] + " " + data["lastName"],
                           rating: data['rating'] == 0
                               ? "N/A"
-                              : data['rating'].toString(),
+                              : data['rating']!.toString(),
                           userVal: widget.args,
                         ),
                       ),
@@ -165,8 +165,10 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(crnSearch ? Colors.amber : Colors.white),
-                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(
+                          crnSearch ? Colors.amber : Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                          TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = true;
@@ -179,8 +181,10 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(courseCode ? Colors.amber : Colors.white),
-                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(
+                          courseCode ? Colors.amber : Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                          TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = false;
@@ -193,8 +197,10 @@ class _SearchState extends State<Search> {
               ElevatedButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      backgroundColor: MaterialStateProperty.all(profSearch ? Colors.amber : Colors.white),
-                      textStyle: MaterialStateProperty.all(TextStyle(color: Colors.black))),
+                      backgroundColor: MaterialStateProperty.all(
+                          profSearch ? Colors.amber : Colors.white),
+                      textStyle: MaterialStateProperty.all(
+                          TextStyle(color: Colors.black))),
                   onPressed: () {
                     setState(() {
                       crnSearch = false;
