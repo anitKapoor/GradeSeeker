@@ -98,7 +98,14 @@ class _HomeState extends State<Home> {
               children: [
                 isSearch
                     ? Search()
-                    : (isBrowse ? BrowsePage(args) : UserProfile(args))
+                    : (isBrowse
+                        ? BrowsePage(args)
+                        : Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                                child: UserProfile(args),
+                                width: 500,
+                                height: 800)))
               ],
             )
           ],
