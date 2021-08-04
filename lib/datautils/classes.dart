@@ -15,8 +15,8 @@ class ClassesPage extends StatefulWidget {
 
 class _ClassesPageState extends State<ClassesPage> {
   List professors = [];
+  double stdDev = 0.0;
   bool render_courses = false;
-  double averageGpa = 0;
 
   @override
   void initState() {
@@ -32,7 +32,9 @@ class _ClassesPageState extends State<ClassesPage> {
     var response = await http.post(
       Uri.parse("http://127.0.0.1:5000/classes"),
       headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
-      body: {"crn": widget.crn.toString()},
+      body: {
+        "crn": widget.crn.toString(),
+      },
     );
     var datafromJSON = json.decode(response.body) as List<dynamic>;
     professors = datafromJSON;
@@ -82,6 +84,11 @@ class _ClassesPageState extends State<ClassesPage> {
               Align(
                 child: Container(
                   child: Text("Average Score : " + widget.av.toString()),
+                ),
+              ),
+              Align(
+                child: Container(
+                  child: Text("Standard Deviation : " + stdDev.toStringAsFixed(2)),
                 ),
               ),
               Align(
