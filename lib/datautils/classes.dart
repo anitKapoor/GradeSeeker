@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../database.dart';
+
 class ClassesPage extends StatefulWidget {
   final String code;
   final String title;
   final int crn;
   final double av;
-  const ClassesPage({Key? key, required this.code, required this.title, required this.crn, required this.av}) : super(key: key);
+  const ClassesPage(
+      {Key? key,
+      required this.code,
+      required this.title,
+      required this.crn,
+      required this.av})
+      : super(key: key);
 
   @override
   _ClassesPageState createState() => _ClassesPageState();
@@ -34,8 +42,11 @@ class _ClassesPageState extends State<ClassesPage> {
   Future newGetData(String Cat) async {
     if (Cat == "profs") {
       var response = await http.post(
-        Uri.parse("http://127.0.0.1:5000/classes"),
-        headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+        Uri.parse(flaskPath + "/classes"),
+        headers: {
+          "Accept": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
         body: {
           "cat": Cat,
           "crn": widget.crn.toString(),
@@ -49,8 +60,11 @@ class _ClassesPageState extends State<ClassesPage> {
     }
     if (Cat == "stats") {
       var response = await http.post(
-        Uri.parse("http://127.0.0.1:5000/classes"),
-        headers: {"Accept": "application/json", "Access-Control-Allow-Origin": "*"},
+        Uri.parse(flaskPath + "/classes"),
+        headers: {
+          "Accept": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
         body: {
           "cat": Cat,
           "crn": widget.crn.toString(),
@@ -110,12 +124,16 @@ class _ClassesPageState extends State<ClassesPage> {
               ),
               Align(
                 child: Container(
-                  child: render_stats ? Text("Standard Deviation : " + stdDev) : Text(""),
+                  child: render_stats
+                      ? Text("Standard Deviation : " + stdDev)
+                      : Text(""),
                 ),
               ),
               Align(
                 child: Container(
-                  child: render_stats ? Text("Percentage of 4.0's achieved : " + perc) : Text(""),
+                  child: render_stats
+                      ? Text("Percentage of 4.0's achieved : " + perc)
+                      : Text(""),
                 ),
               ),
               Align(
@@ -139,7 +157,8 @@ class _ClassesPageState extends State<ClassesPage> {
                                 ),
                               )),
                             ],
-                            rows: List.generate(professors.length, (index) => (_getDataRow(professors[index]))),
+                            rows: List.generate(professors.length,
+                                (index) => (_getDataRow(professors[index]))),
                           ),
                         )
                       : Container(),
