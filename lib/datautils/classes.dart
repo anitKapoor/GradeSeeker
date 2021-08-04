@@ -79,7 +79,7 @@ class _ClassesPageState extends State<ClassesPage> {
         },
       );
       var datafromJSON = json.decode(response.body);
-      goodProf = datafromJSON['b1']['firstName'] + ' ' + datafromJSON['b1']['lastName'];
+      goodProf = datafromJSON['b1']['firstName'] != null ? datafromJSON['b1']['firstName'] + ' ' + datafromJSON['b1']['lastName'] : "None";
       badProf = datafromJSON['b2']['firstName'] + ' ' + datafromJSON['b2']['lastName'];
       setState(() {
         render_profs = true;
