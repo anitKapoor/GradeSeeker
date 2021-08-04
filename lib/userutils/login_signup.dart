@@ -4,6 +4,7 @@ import 'package:gradeseeker/arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gradeseeker/home.dart';
 import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
@@ -15,12 +16,16 @@ class _LoginState extends State<Login> {
   bool _obscurePassword = true;
   final userController = TextEditingController();
   final passwordController = TextEditingController();
+
+  String setUserName = "";
+
   final showToast = false;
 
   @override
   void initState() {
     super.initState();
-    fToast = FToast().init(context);
+    fToast = FToast();
+    fToast?.init(context);
   }
 
   String hashVal(String toHash) {
@@ -39,7 +44,7 @@ class _LoginState extends State<Login> {
           "user_id": userController.text,
           "user_pass": hashVal(passwordController.text)
         }));
-
+    print(jsonDecode(returned.body));
     if (jsonDecode(returned.body)["login_attempt"] == 1) {
       return 1;
     } else {
@@ -75,10 +80,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Card(
-            child: Directionality(
-      textDirection: TextDirection.ltr,
+    return Card(
       child: Column(children: [
         SizedBox(height: 50),
         RichText(text: TextSpan(text: 'Login', style: TextStyle(fontSize: 50))),
@@ -113,10 +115,15 @@ class _LoginState extends State<Login> {
         SizedBox(height: 20),
         ElevatedButton(
           onPressed: () async {
+            setUserName = userController.text;
             int toastCode = await _postLogin();
+            print(toastCode);
             setState(() {
               if (toastCode == 1) {
+                print("here");
                 _showToast("Login Successful!");
+                Navigator.pushNamed(context, Home.route,
+                    arguments: UserArgs(setUserName, false, true));
               } else {
                 _showToast("Invalid Login Details. Please try again!");
               }
@@ -125,7 +132,7 @@ class _LoginState extends State<Login> {
           child: Text("Log In"),
         ),
       ]),
-    )));
+    );
   }
 }
 
