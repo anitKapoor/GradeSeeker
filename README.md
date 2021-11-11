@@ -2,6 +2,13 @@
 
 A new Flutter project.
 
+## Team Members
+
+Anit Kapoor
+Panav Munshi
+Rohan Batra
+Raj Patel
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
