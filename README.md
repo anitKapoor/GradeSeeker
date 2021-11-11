@@ -1,6 +1,6 @@
 # gradeseeker
 
-A new Flutter project.
+The goal of building this website was to assist students of the University of Illinois in making informed academic decisions regarding their course selection. As students at a public university, we are fortunate enough to have a lot of aggregate data available on the public domain. Our team decided to utilize this to its fullest to provide our peers with an accurate representation of achiavable grades under the instruction of given professors in specific courses. Additionally, our website allows for users to create accounts and add public comments for courses and course staff, and become a part of the feedback process. The backend of the website is available on a seperate repo that allows for complete functionality. Happy gradeseeking!
 
 ## Team Members
 
@@ -12,15 +12,3 @@ Rohan Batra
 
 Raj Patel
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
