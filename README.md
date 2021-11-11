@@ -4,6 +4,8 @@ The goal of building this website was to assist students of the University of Il
 
 [Backend reference](https://github.com/anitKapoor/Gradeseeker_Backend)
 
+Data accessed from Prof. Wade's repo: [GPA data](https://github.com/wadefagen/datasets/tree/master/gpa)
+
 ## Team Members
 
 Anit Kapoor
