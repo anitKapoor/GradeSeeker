@@ -5,8 +5,11 @@ A new Flutter project.
 ## Team Members
 
 Anit Kapoor
+
 Panav Munshi
+
 Rohan Batra
+
 Raj Patel
 
 ## Getting Started
